@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CustomerApi.Models;
@@ -58,9 +57,20 @@ namespace CustomerApi.Controllers
                 return BadRequest();
             }
 
-            customer.LastModifiedDate = DateTime.Now;
-            customer.LastModifiedBy = Constants.GeneralConstants.LoginUser;
-            _context.Entry(customer).State = EntityState.Modified;
+            var updatedCustomer = _context.Customer.Find(id);
+
+            if (updatedCustomer == null)
+            {
+                _logger.LogWarning(id + " numaralı kayıt bulunamadı.");
+                return NotFound();
+            }
+
+            updatedCustomer.Name = customer.Name;
+            updatedCustomer.Surname = customer.Surname;
+            updatedCustomer.PhoneNumber = customer.PhoneNumber;
+            updatedCustomer.LastModifiedBy = Constants.GeneralConstants.LoginUser;
+
+            _context.Entry(updatedCustomer).State = EntityState.Modified;
 
             try
             {
@@ -109,8 +119,27 @@ namespace CustomerApi.Controllers
                 return NotFound();
             }
 
-            _context.Customer.Remove(customer);
-            await _context.SaveChangesAsync();
+            customer.IsDeleted = true;
+            customer.LastModifiedBy = Constants.GeneralConstants.LoginUser;
+
+            _context.Entry(customer).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException e)
+            {
+                _logger.LogError(id + " numaralı kayıt silinirken hata alındı.", e);
+                if (!CustomerExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
 
             return customer;
         }

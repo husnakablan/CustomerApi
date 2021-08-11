@@ -1,8 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CustomerApi.Models
 {
@@ -15,6 +11,11 @@ namespace CustomerApi.Models
         }
 
         public DbSet<Customer> Customer { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Customer>().HasQueryFilter(c => !c.IsDeleted);
+        }
     }
 
 }

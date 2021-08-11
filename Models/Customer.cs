@@ -1,22 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace CustomerApi.Models
 {
     public class Customer
     {
-        public Customer(int Id, string Name, string Surname, string PhoneNumber)
+        public Customer(string Name, string Surname, string PhoneNumber)
         {
-            this.Id = Id;
             this.Name = Name;
             this.Surname = Surname;
             this.PhoneNumber = PhoneNumber;
-            this.CreatedDate = DateTime.Now;
             this.CreatedBy = Constants.GeneralConstants.LoginUser;
         }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         public string Name { get; set; }
@@ -25,6 +24,7 @@ namespace CustomerApi.Models
 
         public string PhoneNumber { get; set; }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime CreatedDate { get; set; }
 
         public string CreatedBy { get; set; }
@@ -32,6 +32,9 @@ namespace CustomerApi.Models
         public Nullable<System.DateTime> LastModifiedDate { get; set; }
 
         public string LastModifiedBy { get; set; }
+
+        [JsonIgnore]
+        public bool IsDeleted { get; set; }
 
     }
 }
