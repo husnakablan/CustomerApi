@@ -21,19 +21,26 @@ namespace CustomerApi.Models
         [Column("name")]
         public string Name { get; set; }
 
+        [Column("surname")]
         public string Surname { get; set; }
 
+        [Column("phone_number")]
         public string PhoneNumber { get; set; }
 
+        [Column("created_date")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime CreatedDate { get; set; }
 
+        [Column("created_by")]
         public string CreatedBy { get; set; }
 
+        [Column("last_modified_date")]
         public Nullable<System.DateTime> LastModifiedDate { get; set; }
 
+        [Column("last_modified_by")]
         public string LastModifiedBy { get; set; }
 
+        [Column("is_deleted")]
         [JsonIgnore]
         public bool IsDeleted { get; set; }
 
