@@ -2,7 +2,6 @@
 
 namespace CustomerApi.Models
 {
-   
     public class CustomerContext : DbContext
     {
         public CustomerContext(DbContextOptions<CustomerContext> options)
@@ -17,5 +16,4 @@ namespace CustomerApi.Models
             modelBuilder.Entity<Customer>().HasQueryFilter(c => !c.IsDeleted);
         }
     }
-
 }

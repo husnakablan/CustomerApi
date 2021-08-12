@@ -1,10 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace CustomerApi.Models
 {
+    [Table("customer")]
     public class Customer
     {
         public Customer(string Name, string Surname, string PhoneNumber)
@@ -18,6 +18,7 @@ namespace CustomerApi.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
+        [Column("name")]
         public string Name { get; set; }
 
         public string Surname { get; set; }
