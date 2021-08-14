@@ -14,7 +14,7 @@ namespace CustomerApi.Controllers
     public class CustomersController : ControllerBase
     {
         private readonly CustomerContext _context;
-        private readonly ILogger _logger;
+        private readonly ILogger<CustomersController> _logger;
 
         public CustomersController(CustomerContext context, ILogger<CustomersController> logger)
         {
