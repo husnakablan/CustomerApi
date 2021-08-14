@@ -1,5 +1,10 @@
-﻿DROP TABLE [dbo].[customer];
-DROP TABLE [dbo].[customer_log];
+﻿IF OBJECT_ID(N'dbo.customer', N'U') IS NOT NULL  
+   DROP TABLE [dbo].[customer];
+GO
+
+IF OBJECT_ID(N'dbo.customer_log', N'U') IS NOT NULL  
+   DROP TABLE [dbo].[customer_log];
+GO
 
 CREATE TABLE [dbo].[customer] (
     [id]             	 INT           IDENTITY (1, 1) NOT NULL,
@@ -75,3 +80,9 @@ BEGIN
  			SELECT d.Id, d.name, d.surname, d.phone_number, d.created_by, d.created_date, d.last_modified_by, d.last_modified_date, d.is_deleted, @operation, GETDATE()
 			FROM inserted d
 END
+
+GO
+CREATE NONCLUSTERED INDEX [customer_index] ON [dbo].[customer]([name] ASC, [surname] ASC);
+
+GO
+CREATE NONCLUSTERED INDEX [customer_log_index] ON [dbo].[customer_log]([customer_id] ASC);
